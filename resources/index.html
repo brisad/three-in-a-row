@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Three-in-a-row</title>
+    <style>
+      table, td {
+        border: 1px solid black;
+      }
+      td {
+        width: 100px;
+        height: 100px;
+        text-align: center;
+        font: 5em sans-serif;
+        cursor: pointer;
+      }
+      div {
+        float: left;
+        text-align: center;
+      }
+      div p {
+        font: 2em sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <table>
+        <tr><td>X</td></tr>
+      </table>
+
+      <span id="footer">
+        <p id="message">X wins</p>
+        <button id="restart">Restart</button>
+      </span>
+    </div>
+
+    <script>
+var messageShown = document.getElementById('message').innerHTML != '';
+
+if (!messageShown) {
+  addHoverEvents();
+}
+
+var button = document.getElementById('restart');
+button.addEventListener('click', function (ev) {
+  document.location = "?restart=true";
+});
+
+function addHoverEvents() {
+  var cells = document.getElementsByTagName('td');
+  var nextTurn = "X";
+
+  for (var i = 0; i < cells.length; i++) {
+    var td = cells[i];
+    if (td.className == "occupied") {
+      nextTurn = nextTurn == "X" ? "O" : "X";
+    }
+    else {
+      td.addEventListener('mouseenter', function (ev) {
+        ev.target.innerHTML = nextTurn;
+      });
+
+      td.addEventListener('mouseleave', function (ev) {
+        ev.target.innerHTML = "";
+      });
+
+      (function (i) {
+        td.addEventListener('click', function (ev) {
+          document.location = "?pos=" + i + "&mark=" + nextTurn.toLowerCase();
+        });
+      })(i);
+    }
+  }
+}
+    </script>
+  </body>
+</html>
